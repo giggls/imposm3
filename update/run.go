@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"os/signal"
+	"os/exec"
 	"syscall"
 	"time"
 
@@ -147,6 +148,13 @@ func Run(baseOpts config.Base) {
 				return
 			}
 		}
+		// run custom script after replication e.g. for cleanup of osc.gz files
+		// or to execute additional custom SQL-scripts
+	        if baseOpts.PostReplicateScript != "" {
+	        	log.Printf("[info] calling post replication script: >>%s<<", baseOpts.PostReplicateScript)
+	        	cmd := exec.Command(baseOpts.PostReplicateScript)
+	        	cmd.Run()	        	
+	        }
 	}
 }
 

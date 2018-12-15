@@ -25,6 +25,7 @@ type Config struct {
 	ReplicationUrl      string          `json:"replication_url"`
 	ReplicationInterval MinutesInterval `json:"replication_interval"`
 	DiffStateBefore     MinutesInterval `json:"diff_state_before"`
+        PostReplicateScript string          `json:"post_replicate_script"`
 }
 
 type Schemas struct {
@@ -56,6 +57,7 @@ type Base struct {
 	ReplicationUrl      string
 	ReplicationInterval time.Duration
 	DiffStateBefore     time.Duration
+	PostReplicateScript string
 }
 
 func (o *Base) updateFromConfig() error {
@@ -130,6 +132,7 @@ func (o *Base) updateFromConfig() error {
 		o.ReplicationInterval = time.Minute
 	}
 	o.ReplicationUrl = conf.ReplicationUrl
+	o.PostReplicateScript = conf.PostReplicateScript
 
 	if o.DiffDir == "" {
 		if conf.DiffDir == "" {
